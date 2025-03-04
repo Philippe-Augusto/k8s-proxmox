@@ -221,7 +221,7 @@ sudo kubeadm init --control-plane-endpoint "192.168.20.100:6443" --upload-certs 
 **Notas:**
 - --control-plane-endpoint: define o endpoint, o IP do nó master, control-plane.
 - --upolad-certs: faz a atualização dos certificados do cluster.
-- --pod-network-cidr: declara a rede de pods (por padrao a rede é 192.168.0.0/24), como esta rede esta sendo utilizada para o meu cluster eu fiz a troca para a outra rede.
+- --pod-network-cidr: declara a rede de pods (por padrao a rede é 192.168.0.0/16), como esta rede esta sendo utilizada para o meu cluster eu fiz a troca para a outra rede.
 - Para mais personalizações dos parametros de inicialização do ```kubeadm init``` consulte a documentação.
 
 - Finalizada a inicialização, execute (Esses comandos configuram o arquivo /.kube/config e permitem que você execute o comando kubectl sem o uso de sudo:
