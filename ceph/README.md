@@ -1,7 +1,7 @@
 # CephFS For Kubernetes
 
 - Versao do kubernetes: 1.32
-- Lembrando que no nosso cenário estamos utilizando o ceph configurado dentro do proxmox, para um tutorial para configurar o ceph em seu Proxmox siga: [Tutorial Ceph](../../README.md/#referencias--agradecimentos)
+- Lembrando que no nosso cenário estamos utilizando o ceph configurado dentro do proxmox, para um tutorial para configurar o ceph em seu Proxmox siga: [Tutorial Ceph](https://www.youtube.com/watch?v=TS9KpuIMPfU&t=874s)
 
 
 ### Preparação
