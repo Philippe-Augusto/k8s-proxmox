@@ -1,4 +1,4 @@
-# NGINX
+# NGINX Ingress Controller
 
 ### Instalação do nginx:
 
