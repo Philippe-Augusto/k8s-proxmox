@@ -42,10 +42,12 @@ pveupgrade -y
 3. Com o cluster criado voce obtera o Join Information, que voce ira utilizar para adicionar os demais nós ao cluster.
 
 ### Para carregar uma VM:
+- Primeiro você precisa criar a VM para obter o ID.
 ```bash
 qm importdisk ID-VM imagem.raw.qcow2 storage_destino
 ```
 Dica: crie uma vm e utilize ela como template para clonar os demais nós, vou deixar uma iso da vm pronto no repositório, se ficar com duvidas consulte a [seção](#Referencias--Agradecimentos)
+
 ```bash
 Editar os hosts:
 Exemplo de arquivo de host
@@ -93,33 +95,40 @@ Faça o login
 
 **IMPORTANTE:** O Kubelet não suporta o swap ativo, desative-o antes de continuar:
 - Desative o swap temporariamente com o seguinte comando:
-```  sudo swapoff -a ```
+```
+sudo swapoff -a
+```
 
 - Agora precisamos editar o arquivo /etc/fstab para garantir que o swap nao seja mais utilizado
-  ``` sudo nano /etc/fstab ```
+```
+sudo nano /etc/fstab
+```
 - Procure por uma linha semelhante a essa:
-  ```/swap.img       none    swap    sw      0       0```
+```
+/swap.img       none    swap    sw      0       0
+```
 E entao comente a linha com uma "#", da seguinte forma:
-  ```#/swap.img       none    swap    sw      0       0```
+```
+#/swap.img       none    swap    sw      0       0
+```
 
 - Atualize os pacotes do SO e instale os pacotes necessários para usar o repositório apt do Kubernetes:
 ```
-    sudo apt-get update
-    sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 ```
 
 ### Baixe a chave pública de assinatura para os repositórios de pacotes do Kubernetes
 
 - Baixe a chave pública de assinatura para os repositórios de pacotes do Kubernetes. A mesma chave de assinatura é usada para todos os repositórios, então você pode ignorar a versão na URL. Note que em lançamentos anteriores ao Debian 12 e Ubuntu 22.04, o diretório /etc/apt/keyrings não existe por padrão, e deve ser criado antes do comando curl.
 ```    
-    # Se a pasta `/etc/apt/keyrings` não existir, ela deve ser criada antes do comando curl, leia a nota abaixo.
-    # sudo mkdir -p -m 755 /etc/apt/keyrings
-    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-    sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg # permitir que programas APT sem acesso privilegiado leiam este keyring
+# Se a pasta `/etc/apt/keyrings` não existir, ela deve ser criada antes do comando curl, leia a nota abaixo.
+# sudo mkdir -p -m 755 /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg # permitir que programas APT sem acesso privilegiado leiam este keyring
 ```
 
 ### Adicione o repositório apt apropriado do Kubernetes
-
 - Adicione o repositório apt do Kubernetes. Se você quiser usar uma versão do Kubernetes diferente de v1.32, substitua v1.32 com a versão menor desejada no comando a seguir:
 ```
 # Isto substitui qualquer configuração existente na pasta /etc/apt/sources.list.d/kubernetes.list
@@ -131,9 +140,9 @@ sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list #ajuda ferramentas tais c
 
 - Atualize o índice de pacotes apt, instale o kubelet, kubeadm e kubectl, e fixe suas versões para evitar atualizações inesperadas:
 ```
-    sudo apt-get update
-    sudo apt-get install -y kubelet kubeadm kubectl
-    sudo apt-mark hold kubelet kubeadm kubectl
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
 ```
 
 ### Verificando a instalação
@@ -168,43 +177,45 @@ kubectl <TAB> <TAB>
 
 ### Instalar o Containerd
 
-  Instalar o Containerd
-
-    sudo apt-get install -y containerd
-
-  Configurar o Containerd
-
-    sudo mkdir -p /etc/containerd
-    sudo containerd config default | sudo tee /etc/containerd/config.toml
-    sudo systemctl restart containerd
-    sudo systemctl enable containerd
-
+- Instalar o Containerd
+```
+sudo apt-get install -y containerd
+```
+- Configurar o Containerd
+```
+sudo mkdir -p /etc/containerd
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+```
 ### Configurar o Kernel
 
 - Habilitar o módulo br_netfilter
 ```
-    sudo modprobe br_netfilter
+sudo modprobe br_netfilter
 ```
 - Aplica configurações sysctl necessárias:
 ```
-    sudo bash -c 'cat <<EOF >/etc/sysctl.d/k8s.conf
-    net.bridge.bridge-nf-call-iptables = 1
-    net.bridge.bridge-nf-call-ip6tables = 1
-    net.ipv4.ip_forward = 1
-    EOF'
-    sudo sysctl --system
+sudo bash -c 'cat <<EOF >/etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward = 1
+EOF'
+sudo sysctl --system
 ```
-- Habilite o ip forward, para isso execute:
+- Habilitando o ip forward:
 ```
 sudo nano /etc/sysctl.conf
 ```
-e descomente a linha:
+descomente a linha:
+```
 # Uncomment the next line to enable packet forwarding for IPv4
 net.ipv4.ip_forward=1
+```
 
 ### Habilitando o kubelet
 ```
-    sudo systemctl enable --now kubelet
+sudo systemctl enable --now kubelet
 ```
 
 ## Referencias & Agradecimentos:
