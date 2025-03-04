@@ -251,6 +251,8 @@ kubeadm token create --print-join-command
 
 ## Referencias & Agradecimentos:
 - [Calico Documentation](https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart)
+- [Primeiros passos com Kubernetes na prática! Pods, Deployments e Services.](https://www.youtube.com/watch?v=xXUhepb5Ccc&t=1365s&ab_channel=Prof.GustavoLeit%C3%A3o)
+- [Kubernetes - Configurando NGINX Ingress Controller (Bare Metal)](https://www.youtube.com/watch?v=AGSGcUzkqrE&t=879s&ab_channel=Prof.GustavoLeit%C3%A3o)
 - [Kubernetes Documentation](https://kubernetes.io/pt-br/docs/home/).
 - [Instalação kubernetes](https://github.com/nrcinfufg/kubekubeflow/blob/main/README.md?plain=1)
 - [How to Build an Awesome Kubernetes Cluster using Proxmox Virtual Environment](https://www.youtube.com/watch?v=U1VzcjCB_sY&t=2839s&ab_channel=LearnLinuxTV).
