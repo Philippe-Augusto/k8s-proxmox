@@ -214,7 +214,43 @@ net.ipv4.ip_forward=1
 sudo systemctl enable --now kubelet
 ```
 
+### Inicializando o cluster
+```
+sudo kubeadm init --control-plane-endpoint "192.168.20.100:6443" --upload-certs --pod-network-cidr=10.244.0.0/16 
+```
+**Notas:**
+- --control-plane-endpoint: define o endpoint, o IP do nó master, control-plane.
+- --upolad-certs: faz a atualização dos certificados do cluster.
+- --pod-network-cidr: declara a rede de pods (por padrao a rede é 192.168.0.0/24), como esta rede esta sendo utilizada para o meu cluster eu fiz a troca para a outra rede.
+- Para mais personalizações dos parametros de inicialização do ```kubeadm init``` consulte a documentação.
+
+- Finalizada a inicialização, execute (Esses comandos configuram o arquivo /.kube/config e peritem que você execute o comando kubectl sem o uso de suo:
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+- Encontre o token de JOIN que aparecera no terminal e utilize esse token para inserir os demais nós do cluster k8s.
+```
+kubeadm join <IP-ENDPOINT>:6443 --token <SEU-TOKEN> --discovery-token-ca-cert-hash sha256:<SEU-CERT-HASH>
+```
+
+- Exemplo de comando JOIN:
+```
+kubeadm join 192.168.1.100:6443 --token abcdef.0123456789abcdef --discovery-token-ca-cert-hash sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+```
+
+- Caso você perca o token, não se preocupe, é possível obte-lo com o comando:
+```
+kubeadm token create --print-join-command
+```
+
+### Próximos passos:
+- Instalação e configuração o calico
+
 ## Referencias & Agradecimentos:
+- [Calico Documentation](https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart)
 - [Kubernetes Documentation](https://kubernetes.io/pt-br/docs/home/).
 - [Instalação kubernetes](https://github.com/nrcinfufg/kubekubeflow/blob/main/README.md?plain=1)
 - [How to Build an Awesome Kubernetes Cluster using Proxmox Virtual Environment](https://www.youtube.com/watch?v=U1VzcjCB_sY&t=2839s&ab_channel=LearnLinuxTV).
