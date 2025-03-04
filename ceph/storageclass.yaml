@@ -1,0 +1,17 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-fs-sc
+provisioner: cephfs.csi.ceph.com
+parameters:
+  clusterID: "ID do seu Cluster"  # Obtenha com 'ceph fsid'
+  fsName: cephfs # Nome do cephfs
+  pool: Dados  # Nome do pool de dados do CephFS
+  csi.storage.k8s.io/provisioner-secret-name: csi-fs-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: kube-system
+  csi.storage.k8s.io/controller-expand-secret-name: csi-fs-secret
+  csi.storage.k8s.io/controller-expand-secret-namespace: kube-system
+  csi.storage.k8s.io/node-stage-secret-name: csi-fs-secret
+  csi.storage.k8s.io/node-stage-secret-namespace: kube-system
+reclaimPolicy: Delete
+allowVolumeExpansion: true
