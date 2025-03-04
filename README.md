@@ -1,5 +1,5 @@
 # k8s-proxmox
-Este repositório documenta o processo de criação e configuração de um cluster Kubernetes (K8s) dentro de um ambiente de virtualização baseado em Proxmox. O objetivo é fornecer um guia detalhado para ajudar na configuração desde a instalação do Proxmox até a instalação e configuração do *jupyterhub* no Kubernetes.
+Este repositório documenta o processo de criação e configuração de um cluster Kubernetes (K8s) dentro de um ambiente de virtualização baseado em Proxmox. O objetivo é fornecer um guia detalhado para ajudar na configuração desde a instalação do Proxmox até a instalação e configuração do **jupyterhub** no Kubernetes.
 
 ## Índice
 
