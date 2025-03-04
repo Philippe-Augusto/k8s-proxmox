@@ -85,7 +85,7 @@ taiscale up
 ```
 Faça o login
 
-## Kubernetes
+## Instalação Kubernetes
 - Esta seção fornece instruções detalhadas sobre como instalar o Kubernetes v1.32 em um servidor Ubuntu 24.04.
 
 **IMPORTANTE:** O Kubelet não suporta o swap ativo, desative-o antes de continuar:
