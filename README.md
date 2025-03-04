@@ -5,30 +5,25 @@ Este repositório documenta o processo de criação e configuração de um clust
 
 1. [Instalação do Proxmox](#instalação-proxmox)
 2. [Instalação do Kubernetes](#kubernetes)
-3. [Referências & Agradecimentos](#Referencias--Agradecimentos)
+3. [Referências & Agradecimentos](#referencias--agradecimentos)
 
 ## Instalação Proxmox:
 - Baixe a ISO no link: [https://atxfiles.netgate.com/mirror/downloads/](https://atxfiles.netgate.com/mirror/downloads/)
-- Prossiga com o passo a passo da instalação (Recomendo que você utilize o padrão da instalação), se ficar com duvidas durante a instalação consulte a [seção](#Referencias&Agradecimentos).
+- Prossiga com o passo a passo da instalação (Recomendo que você utilize o padrão da instalação), se ficar com duvidas durante a instalação consulte as [Referências](#referencias--agradecimentos).
+
 **OBS:** Caso você for criar um cluster Proxmox, os nós não podem conter o mesmo nome, então lembre-se de dar nomes diferentes aos nós para evitar trabalho no futuro.
 
 ### Acesso à Interface Web
 
 - Ao fim da instalação, acesse a interface web do servidor Proxmox: `SEU-IP:8006`
 
-- Se o intuito é utilizar o sistema de forma livre (sem adquirir a licença):
-	- Desativar os repositórios enterprise
-	- Acesse a interface web: node -> updates -> repositories
-	- Adicionar os seguintes repositórios:
-		- No - subscription 
-		- Se voce for instalar o Ceph, adicione tambem o repositorio Ceph Reef No-Subscription
-1. Se o intuito é utilizar o sistema de forma livre (sem adquirir a licença)
-2. Acesse: `node -> updates -> repositories`
-3. Desative os seguintes repositórios enterprise
-   - pve-enterprise
-4. Adicione os seguintes repositórios:
-   - No-Subscription
-   - Se você for instalar o Ceph, adicione também o repositório Ceph Reef No-Subscription.
+- Se o intuito é utilizar o sistema de forma livre (sem adquirir a licença)
+	- Acesse: `node -> updates -> repositories`
+ 	- Desative os seguintes repositórios enterprise
+  		- pve-enterprise
+	- Adicione os seguintes repositórios:
+   		- No-Subscription
+   		- Ceph Reef No-Subscription (Se você for instalar o Ceph).
 
 Execute os seguintes comandos para atualização do proxmox:
 ```bash 
@@ -36,7 +31,7 @@ apt update
 pveupgrade -y
 ```
 
-### Para criar um cluster:
+### Para criar um cluster Proxmox:
 1. Acesse a interface web
 2. Vá em `Datacenter -> Cluster -> Create Cluster`
 3. Com o cluster criado voce obtera o Join Information, que voce ira utilizar para adicionar os demais nós ao cluster.
@@ -46,7 +41,7 @@ pveupgrade -y
 ```bash
 qm importdisk ID-VM imagem.raw.qcow2 storage_destino
 ```
-Dica: crie uma vm e utilize ela como template para clonar os demais nós, vou deixar uma iso da vm pronto no repositório, se ficar com duvidas consulte a [seção](#Referencias--Agradecimentos)
+Dica: crie uma vm e utilize ela como template para clonar os demais nós, vou deixar uma iso da vm pronto no repositório, se ficar com duvidas consulte as [Referências](#referencias--agradecimentos).
 
 ```bash
 Editar os hosts:
@@ -99,7 +94,7 @@ Faça o login
 sudo swapoff -a
 ```
 
-- Agora precisamos editar o arquivo /etc/fstab para garantir que o swap nao seja mais utilizado
+- Agora precisamos editar o arquivo /etc/fstab para garantir que o swap nao seja mais utilizado pelo SO.
 ```
 sudo nano /etc/fstab
 ```
@@ -171,9 +166,10 @@ echo 'alias k=kubectl' >>~/.bashrc
 echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
 ```
 
-- reinicie o bash e teste 
-kubectl <TAB> <TAB>
-
+- Reinicie o bash
+```
+source ~/.bashrc
+```
 
 ### Instalar o Containerd
 
@@ -207,7 +203,7 @@ sudo sysctl --system
 ```
 sudo nano /etc/sysctl.conf
 ```
-descomente a linha:
+- Descomente a linha:
 ```
 # Uncomment the next line to enable packet forwarding for IPv4
 net.ipv4.ip_forward=1
@@ -219,8 +215,7 @@ sudo systemctl enable --now kubelet
 ```
 
 ## Referencias & Agradecimentos:
-[Kubernetes Documentation](https://kubernetes.io/pt-br/docs/home/)
-[https://www.youtube.com/watch?v=U1VzcjCB_sY&t=2839s](https://www.youtube.com/watch?v=U1VzcjCB_sY&t=2839s&ab_channel=LearnLinuxTV)
-[https://www.youtube.com/watch?v=HqOGeqT-SCA](https://www.youtube.com/watch?v=HqOGeqT-SCA&ab_channel=H2DC-HowtodoComputers)
-[https://www.youtube.com/watch?v=TS9KpuIMPfU&t=874s](https://www.youtube.com/watch?v=TS9KpuIMPfU&t=874s&ab_channel=TISemHesitar)
-https://github.com/nrcinfufg/kubekubeflow/blob/main/README.md?plain=1
+- [Kubernetes Documentation](https://kubernetes.io/pt-br/docs/home/).
+- [Instalação kubernetes](https://github.com/nrcinfufg/kubekubeflow/blob/main/README.md?plain=1)
+- [How to Build an Awesome Kubernetes Cluster using Proxmox Virtual Environment](https://www.youtube.com/watch?v=U1VzcjCB_sY&t=2839s&ab_channel=LearnLinuxTV).
+- [Tutorial Instalação do Ceph no Proxmox 8](https://www.youtube.com/watch?v=TS9KpuIMPfU&t=874s&ab_channel=TISemHesitar).
