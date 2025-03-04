@@ -41,7 +41,7 @@ pveupgrade -y
 ```bash
 qm importdisk ID-VM imagem.raw.qcow2 storage_destino
 ```
-Dica: crie uma vm e utilize ela como template para clonar os demais nós, caso queira utilizar o meu tamplate haverá um template pronto no repositório, se ficar com duvidas consulte as [Referências](#referencias--agradecimentos).
+**Dica:** crie uma vm e utilize ela como template para clonar os demais nós, se ficar com duvidas de como fazer consulte o [tutorial](https://youtu.be/U1VzcjCB_sY?t=2042)
 
 ```bash
 Editar os hosts:
