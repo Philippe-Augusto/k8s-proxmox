@@ -1,16 +1,20 @@
 # k8s-proxmox
-Este repositório documenta o processo de criação e configuração de um cluster Kubernetes (K8s) dentro de um ambiente de virtualização baseado em Proxmox.
+Este repositório documenta o processo de criação e configuração de um cluster Kubernetes (K8s) dentro de um ambiente de virtualização baseado em Proxmox. O objetivo é fornecer um guia detalhado para ajudar na configuração desde a instalação do Proxmox até a instalação e configuração do Kubernetes.
 
 ## Índice
 
-1. Instalação do Proxmox
-2. Instalação do Kubebernetes
+1. [Instalação do Proxmox](#instalação-proxmox)
+2. [Instalação do Kubernetes](#kubernetes)
+3. [Referências & Agradecimentos](#Referencias--Agradecimentos)
 
 ## Instalação Proxmox:
-- Baixe a iso no link: https://atxfiles.netgate.com/mirror/downloads/
+- Baixe a ISO no link: [https://atxfiles.netgate.com/mirror/downloads/](https://atxfiles.netgate.com/mirror/downloads/)
 - Prossiga com o passo a passo da instalação (Recomendo que você utilize o padrão da instalação), se ficar com duvidas durante a instalação consulte a seção <Ref Seção Referencias e Agradecimentos>.
-OBS: Caso você for criar um cluster proxmox, os nós não podem conter o mesmo nome, entao lembre-se de dar nomes diferentes ao nós, para evitar trabalho no futuro.
-- Ao fim da instalação acesse a interface web do servidor proxmox: <SEU-IP>:8006 
+**OBS:** Caso você for criar um cluster Proxmox, os nós não podem conter o mesmo nome, então lembre-se de dar nomes diferentes aos nós para evitar trabalho no futuro.
+
+### Acesso à Interface Web
+
+- Ao fim da instalação, acesse a interface web do servidor Proxmox: `SEU-IP:8006`
 
 - Se o intuito é utilizar o sistema de forma livre (sem adquirir a licença):
 	- Desativar os repositórios enterprise
@@ -19,24 +23,31 @@ OBS: Caso você for criar um cluster proxmox, os nós não podem conter o mesmo 
 		- No - subscription 
 		- Se voce for instalar o Ceph, adicione tambem o repositorio Ceph Reef No-Subscription
 
+1. Acesse: `node -> updates -> repositories`
+2. Adicione os seguintes repositórios:
+   - No-Subscription
+   - Se você for instalar o Ceph, adicione também o repositório Ceph Reef No-Subscription.
+
+
 Execute os seguintes comandos para atualização do proxmox:
+```bash 
 apt update
 pveupgrade -y
+```
 
--- Para criar um cluster:
+### Para criar um cluster:
+1. Acesse a interface web
+2. Vá em `Datacenter -> Cluster -> Create Cluster`
+3. Com o cluster criado voce obtera o Join Information, que voce ira utilizar para adicionar os demais nós ao cluster.
 
-- Na interface web vá em Datacenter -> Cluster -> Create Cluster
-	- Com o cluster criado voce obtera o Join Information, que voce ira utilizar para adicionar os demais nós ao cluster.
-
--- Para carregar uma VM:
-
-- qm importdisk ID-VM imagem.raw.qcow2 storage_destino
-
-Dica: crie uma vm e utilize ela como template para clonar os demais nós, vou deixar uma iso da vm pronto no repositório, se ficar com duvidas consulte a seção <Ref Seção Referencias e Agradecimentos>
-
+### Para carregar uma VM:
+```bash
+qm importdisk ID-VM imagem.raw.qcow2 storage_destino
+```
+Dica: crie uma vm e utilize ela como template para clonar os demais nós, vou deixar uma iso da vm pronto no repositório, se ficar com duvidas consulte a [seção](#Referencias--Agradecimentos)
+```bash
 Editar os hosts:
 Exemplo de arquivo de host
-----------------------------------------------------------
 127.0.0.1 localhost.localdomain localhost
 192.168.20.51 pve1.inf.ufg.br pve1
 
@@ -52,24 +63,31 @@ ff02::3 ip6-allhosts
 192.168.20.50 pve0.inf.ufg.br pve0 ####Observe que estou declarando os demais nós dos cluster como hosts 
 192.168.20.52 pve2.inf.ufg.br pve2
 192.168.20.53 pve3.inf.ufg.br pve3
-----------------------------------------------------------
+```
 
--- Excluir local-lvm (Opcional):
-  lvremove /dev/pve/data
-  lvresize -l +100%FREE /dev/pve/root
-  resize2fs /dev/mapper/pve-root
 
-Incluir no tailscale (Opcional):
+### Excluir local-lvm (Opcional):
+O comando pode variar de acordo com o mapeamento/instalação do Proxmox
+```bash
+lvremove /dev/pve/data
+lvresize -l +100%FREE /dev/pve/root
+resize2fs /dev/mapper/pve-root
+```
+
+### Incluir no tailscale (Opcional):
 - Faça isso caso voce deseje configurar algum tipo de acesso externo, pode utilizar outra VPN de sua preferência, ou outro método.
 
 - Download:
-	curl -fsSL https://tailscale.com/install.sh | sh
+```
+curl -fsSL https://tailscale.com/install.sh | sh
+```
+Execute: 
+```
+taiscale up
+```
+Faça o login
 
-	Execute: taiscale up
-	Faça o login
-
-## Kubebernetes
-
+## Kubernetes
 Instalação do Kubernetes v1.32 no Ubuntu 24.04 Server
 
 Este guia fornece instruções detalhadas sobre como instalar o Kubernetes v1.32 em um servidor Ubuntu 24.04.
