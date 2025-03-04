@@ -1,0 +1,9 @@
+csiConfig:
+ - clusterID: "ID do seu cluster" # Obtenha o id com ceph fsid
+   monitors: #IP dos monitores do cluster
+    - "192.168.20.50:6789" 
+    - "192.168.20.51:6789"
+    - "192.168.20.52:6789"
+   cephFS:
+     subvolumeGroup: "kubernetes" # Caso voce queira organizar melhor os dados que serao utilizados, 
+                                  # sugiro que voce crie um subvolumeGroup dentro do ceph  
