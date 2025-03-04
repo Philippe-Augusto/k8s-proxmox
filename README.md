@@ -247,7 +247,7 @@ kubeadm token create --print-join-command
 ```
 
 ### Próximos passos:
-- Instalação e configuração o calico
+- Instalação e configuração do calico
 
 ## Referencias & Agradecimentos:
 - [Calico Documentation](https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart)
