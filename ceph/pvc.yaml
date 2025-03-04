@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cephfs-jupyter-pvc
+spec:
+  accessModes:
+    - ReadWriteMany  # Permite múltiplos pods acessarem
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: csi-fs-sc
